@@ -1,8 +1,7 @@
-package br.com.cotemig.codesmartbalancespringboot.model;
+package br.com.cotemig.codesmartbalancespringboot.Model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.ValidationException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "transactions")
-public class Transaction extends Model{
+public class Transaction{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -102,17 +101,6 @@ public class Transaction extends Model{
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
-    }
-
-    @Override
-    public void validade() throws ValidationException {
-        if (this.getDescription() == null) throw new ValidationException("Descrição não pode ser nula.");
-        if (this.getAmount() == null) throw new ValidationException("Valor não pode ser nulo.");
-        if (this.getAmount().compareTo(BigDecimal.ZERO) <= 0)
-            throw new ValidationException("Valor deve ser maior que zero.");
-        if (this.getType() == null) throw new ValidationException("Tipo não pode ser nulo.");
-        if (this.getOccurredAt() == null) throw new ValidationException("Data da transação não pode ser nula.");
-        if (this.getBankId() == null) throw new ValidationException("Banco não pode ser nulo.");
     }
 }
 

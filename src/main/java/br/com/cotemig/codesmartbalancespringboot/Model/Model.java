@@ -1,4 +1,4 @@
-package br.com.cotemig.codesmartbalancespringboot.model;
+package br.com.cotemig.codesmartbalancespringboot.Model;
 
 import jakarta.validation.ValidationException;
 

@@ -1,13 +1,12 @@
-package br.com.cotemig.codesmartbalancespringboot.model;
+package br.com.cotemig.codesmartbalancespringboot.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.ValidationException;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "banks")
-public class Bank extends Model{
+public class Bank{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long code;
@@ -62,11 +61,4 @@ public class Bank extends Model{
     @Override
     public int hashCode(){return Objects.hash(code);}
 
-    @Override
-    public void validade() throws ValidationException {
-        if (this.getCode() == null) throw new ValidationException("Código não pode ser nulo.");
-        if (this.getName() == null) throw new ValidationException("Nome não pode ser nulo.");
-        if (this.getLogoUrl() == null) throw new ValidationException("Logo não pode ser nula.");
-        if (this.getUserId() == null) throw new ValidationException("Id do usuário não pode ser nulo.");
-    }
 }
