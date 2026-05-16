@@ -1,11 +1,13 @@
 package br.com.cotemig.codesmartbalancespringboot.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.ValidationException;
+
 import java.util.Objects;
 
 @Entity
 @Table(name = "banks")
-public class Bank {
+public class Bank extends Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long code;
@@ -23,11 +25,20 @@ public class Bank {
 
     }
 
-    public Bank(String name, String logoUrl, Long userId){
+    public Bank(Long code, String name, String logoUrl, Long userID) {
+        this.code = code;
         this.name = name;
         this.logoUrl = logoUrl;
-        this.userID = userId;
+        this.userID = userID;
     }
+
+    public void merge(BankDTO bankDTO) {
+        this.setId(bankDTO.id());
+        this.setCode(bankDTO.code());
+        this.setName(bankDTO.name());
+        this.setLogoUrl(bankDTO.logoUrl());
+    }
+
     public Long getCode(){return code;}
     public void setCode(Long code) {this.code = code;}
 
@@ -38,7 +49,7 @@ public class Bank {
     public void setLogoUrl(String logoUrl){this.logoUrl = logoUrl;}
 
     public Long getUserID(){return userID;}
-    public  void setUserID(Long userID){this.userID = userID;}
+    public void setUserID(Long userID){this.userID = userID;}
 
     @Override
     public  boolean equals(Object o){
@@ -50,4 +61,12 @@ public class Bank {
 
     @Override
     public int hashCode(){return Objects.hash(code);}
+
+    @Override
+    public void validade() throws ValidationException {
+        if (this.getCode() == null) throw new ValidationException("Código não pode ser nulo.");
+        if (this.getName() == null) throw new ValidationException("Nome não pode ser nulo.");
+        if (this.getLogoUrl() == null) throw new ValidationException("Logo não pode ser nula.");
+        if (this.getUserId() == null) throw new ValidationException("Id do usuário não pode ser nulo.");
+    }
 }
