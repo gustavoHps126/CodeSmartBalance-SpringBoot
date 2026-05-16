@@ -7,30 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public List<User> findAll() {
-        return this.userRepository.findAll();
+        return userRepository.findAll();
     }
 
     public User findById(Long id) throws NotFoundException {
-        var user = this.userRepository.findById(id);
-        if (user.isEmpty()) throw new NotFoundException();
-        return user.get();
+        return userRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public void deleteById(Long id) throws NotFoundException {
         var user = findById(id);
-        this.userRepository.delete(user);
+        userRepository.delete(user);
     }
 
     public User save(User user) {
-        this.userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 }

@@ -1,11 +1,11 @@
 package br.com.cotemig.codesmartbalancespringboot.Controller;
 
-import br.com.cotemig.codesmartbalancespringboot.DTO.BankRequestDTO;
 import br.com.cotemig.codesmartbalancespringboot.DTO.ErrorResponseDTO;
+import br.com.cotemig.codesmartbalancespringboot.DTO.UserRequestDTO;
 import br.com.cotemig.codesmartbalancespringboot.Exception.NotFoundException;
-import br.com.cotemig.codesmartbalancespringboot.Mapper.BankMapper;
-import br.com.cotemig.codesmartbalancespringboot.Model.Bank;
-import br.com.cotemig.codesmartbalancespringboot.Service.BankService;
+import br.com.cotemig.codesmartbalancespringboot.Mapper.UserMapper;
+import br.com.cotemig.codesmartbalancespringboot.Model.User;
+import br.com.cotemig.codesmartbalancespringboot.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -16,45 +16,45 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/banks")
-public class BankController {
-    private final BankService bankService;
-    private final BankMapper bankMapper;
+@RequestMapping("/users")
+public class UserController {
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    public BankController(BankService bankService, BankMapper bankMapper) {
-        this.bankService = bankService;
-        this.bankMapper = bankMapper;
+    public UserController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Bank>> findAll() {
-        return ResponseEntity.ok(bankService.findAll());
+    public ResponseEntity<List<User>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Bank> findById(@PathVariable Long id) throws NotFoundException {
-        return ResponseEntity.ok(bankService.findById(id));
+    public ResponseEntity<User> findById(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) throws NotFoundException {
-        bankService.deleteById(id);
+        userService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping
-    public ResponseEntity<Bank> create(@RequestBody @Valid BankRequestDTO bankDTO) {
-        var bank = bankMapper.createBank(bankDTO);
-        bank = bankService.save(bank);
-        return ResponseEntity.status(201).body(bank);
+    public ResponseEntity<User> create(@RequestBody @Valid UserRequestDTO userDTO) {
+        var user = userMapper.createUser(userDTO);
+        user = userService.save(user);
+        return ResponseEntity.status(201).body(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Bank> update(@PathVariable Long id, @RequestBody @Valid BankRequestDTO bankRequestDTO) throws NotFoundException {
-        var bank = bankService.findById(id);
-        bank = bankMapper.updateBank(bankRequestDTO, bank);
-        bank = bankService.save(bank);
-        return ResponseEntity.ok(bank);
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserRequestDTO userRequestDTO) throws NotFoundException {
+        var user = userService.findById(id);
+        user = userMapper.updateUser(userRequestDTO, user);
+        user = userService.save(user);
+        return ResponseEntity.ok(user);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -75,7 +75,7 @@ public class BankController {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return ResponseEntity.status(409).body(
-                new ErrorResponseDTO("Não pode haver mais de um banco com o mesmo nome ou código!", new String[0])
+                new ErrorResponseDTO("Não pode haver mais de um usuário com o mesmo username!", new String[0])
         );
     }
 }

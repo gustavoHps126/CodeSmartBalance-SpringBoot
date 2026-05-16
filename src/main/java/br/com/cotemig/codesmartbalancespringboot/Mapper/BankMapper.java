@@ -7,19 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankMapper {
 
-    public Bank createBank(BankRequestDTO bankRequestDTO) {
-        return new Bank(
-                bankRequestDTO.name(),
-                bankRequestDTO.logoUrl(),
-                bankRequestDTO.userId()
-        );
+    public Bank createBank(BankRequestDTO dto) {
+        return new Bank(dto.code(), dto.name(), dto.logoUrl(), dto.userId());
     }
 
-    public Bank updateBank(BankRequestDTO bankRequestDTO, Bank bank) {
-        bank.setName(bankRequestDTO.name());
-        bank.setLogoUrl(bankRequestDTO.logoUrl());
-        bank.setUserID(bankRequestDTO.userId());
+    public Bank updateBank(BankRequestDTO dto, Bank bank) {
+        bank.setCode(dto.code());
+        bank.setName(dto.name());
+        bank.setLogoUrl(dto.logoUrl());
+        bank.setUserId(dto.userId());
         return bank;
     }
-
 }

@@ -7,30 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BankService {
-    private BankRepository bankRepository;
+    private final BankRepository bankRepository;
 
     public BankService(BankRepository bankRepository) {
         this.bankRepository = bankRepository;
     }
 
     public List<Bank> findAll() {
-        return this.bankRepository.findAll();
+        return bankRepository.findAll();
     }
 
     public Bank findById(Long id) throws NotFoundException {
-        var bank = this.bankRepository.findById(id);
-        if (bank.isEmpty()) throw new NotFoundException();
-        return bank.get();
+        return bankRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     public void deleteById(Long id) throws NotFoundException {
         var bank = findById(id);
-        this.bankRepository.delete(bank);
+        bankRepository.delete(bank);
     }
 
     public Bank save(Bank bank) {
-        this.bankRepository.save(bank);
-        return bank;
+        return bankRepository.save(bank);
     }
 }

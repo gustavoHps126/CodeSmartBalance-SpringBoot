@@ -1,4 +1,4 @@
 package br.com.cotemig.codesmartbalancespringboot.DTO;
 
-public record ErrprResponseDTO() {
+public record ErrorResponseDTO(String message, String[] details) {
 }
